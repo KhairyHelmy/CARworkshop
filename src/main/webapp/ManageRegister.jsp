@@ -119,13 +119,19 @@
     String DB_URL = System.getenv("DB_URL");
     String DB_USERNAME = System.getenv("DB_USER");
     String DB_PASSWORD = System.getenv("DB_PASSWORD");
-    String query = "SELECT id, name, phone, email, role FROM users";
+    String query = "SELECT user_id, name, phone, email, role FROM users";
 
     Connection conn = null;
     Statement stmt = null;
     ResultSet rs = null;
 
     try {
+        // Debug log
+        System.out.println("Connecting to DB...");
+        System.out.println("DB_URL = " + DB_URL);
+        System.out.println("DB_USER = " + DB_USERNAME);
+        // Jangan log DB_PASSWORD untuk keselamatan
+
         // Load MySQL JDBC Driver
         Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -141,41 +147,24 @@
         // Loop through the result set and display the data
         while (rs.next()) {
 %>
-
-                            <tr>
-                                <td><%= rs.getInt("id") %></td>
-                                <td><%= rs.getString("name") %></td>
-                                <td><%= rs.getString("phone") %></td>
-                                <td><%= rs.getString("email") %></td>
-                                <td><%= rs.getString("role") %></td>
-                                <td>
-                                    <form action="EditRegister.jsp" method="post" style="display:inline;">
-                                        <input type="hidden" name="id" value="<%= rs.getInt("id") %>">
-                                        <button type="submit">Update</button>
-                                    </form>
-                                    <form action="DeleteRegister.jsp" method="post" style="display:inline;">
-                                        <input type="hidden" name="id" value="<%= rs.getInt("id") %>">
-                                        <button type="submit">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                <%
-                        }
-                    } catch (Exception e) {
-                        out.println("<tr><td colspan='7'>Error: " + e.getMessage() + "</td></tr>");
-                    } finally {
-                        // Close resources
-                        try {
-                            if (rs != null) rs.close();
-                            if (stmt != null) stmt.close();
-                            if (conn != null) conn.close();
-                        } catch (SQLException ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                %>
-            </tbody>
-        </table>
-    </div>
-</body>
-</html>
+<!-- HTML/JSP content here, contoh: -->
+<tr>
+    <td><%= rs.getInt("user_id") %></td>
+    <td><%= rs.getString("name") %></td>
+    <td><%= rs.getString("phone") %></td>
+    <td><%= rs.getString("email") %></td>
+    <td><%= rs.getString("role") %></td>
+</tr>
+<%
+        }
+    } catch (Exception e) {
+        e.printStackTrace(); // Akan tunjuk error di console
+%>
+    <p style="color:red;">Database connection error: <%= e.getMessage() %></p>
+<%
+    } finally {
+        if (rs != null) rs.close();
+        if (stmt != null) stmt.close();
+        if (conn != null) conn.close();
+    }
+%>

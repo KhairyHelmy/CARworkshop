@@ -106,7 +106,7 @@
 
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/workshopdb", "root", "");
+                conn = DriverManager.getConnection("DB_URL", "DB_USER", "DB_PASSWORD");
                 String query = "SELECT * FROM receipts WHERE id=?";
                 ps = conn.prepareStatement(query);
                 ps.setString(1, id);

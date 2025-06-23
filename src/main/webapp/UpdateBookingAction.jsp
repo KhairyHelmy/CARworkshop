@@ -176,10 +176,11 @@ button:hover {
         </ul>
     </nav>
     <%
-        // Database connection parameters
-        String DB_URL = "jdbc:mysql://localhost:3306/workshopdb";
-        String DB_USERNAME = "root";
-        String DB_PASSWORD = "";
+        // Database connection parameters (from environment variables)
+String DB_URL = System.getenv("DB_URL");
+String DB_USERNAME = System.getenv("DB_USER");
+String DB_PASSWORD = System.getenv("DB_PASSWORD");
+
 
         String bookingId = request.getParameter("booking_id");
         String carOwnerName = request.getParameter("car_owner_name");
