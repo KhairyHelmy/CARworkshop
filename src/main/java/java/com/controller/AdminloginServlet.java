@@ -1,4 +1,4 @@
-package com.controller;
+package java.com.controller;
 
 import com.util.DBConnection;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/AdminloginServlet")
 public class AdminloginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
+        String username = request.getParameter("name");
         String password = request.getParameter("password");
 
         String query = "SELECT * FROM users WHERE name = ? AND  password = ?";
@@ -24,7 +24,7 @@ public class AdminloginServlet extends HttpServlet {
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
               
-            System.out.println("Username: " + username);
+            System.out.println("name: " + username);
             System.out.println("Password: " + password);
 
             if (connection == null || connection.isClosed()) {
@@ -40,7 +40,7 @@ public class AdminloginServlet extends HttpServlet {
 
             if (resultSet.next()) {
                 HttpSession session = request.getSession();
-                session.setAttribute("username", username);
+                session.setAttribute("name", username);
                 response.sendRedirect("Homepage.jsp");
             } else {
                 System.out.println("Invalid login attempt for username: " + username);
