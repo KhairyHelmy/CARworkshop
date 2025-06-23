@@ -6,6 +6,7 @@ package com.controller;
 
  
 
+import com.util.DBConnection;
 import java.io.IOException;
 import java.sql.*;
 import javax.servlet.ServletException;
@@ -25,8 +26,9 @@ public class UpdateMaintenanceServlet extends HttpServlet {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                "DB_URL", "DB_USER", "DB_PASSWORD");
+            
+           Connection conn = DBConnection.getConnection();
+
 
             String sql = "UPDATE maintenance_records SET plate_number=?, car_type=?, damage_description=?, repair_status=? WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
