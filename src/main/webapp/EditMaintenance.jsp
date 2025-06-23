@@ -4,6 +4,7 @@
     Author     : ASYIQDANIAL
 --%>
 
+<%@page import="com.util.DBConnection"%>
 <%@ page import="java.sql.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -58,12 +59,11 @@
         int id = Integer.parseInt(request.getParameter("id"));
         String plateNumber = "", carType = "", damage = "", repairStatus = "";
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/workshopdb", "root", "");
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM maintenance_records WHERE id = ?");
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
+       try {
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = conn.prepareStatement("SELECT * FROM maintenance_records WHERE id = ?");
+    ps.setInt(1, id);
+    ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 plateNumber = rs.getString("plate_number");

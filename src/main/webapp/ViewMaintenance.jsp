@@ -1,3 +1,4 @@
+<%@page import="com.util.DBConnection"%>
 <%@ page import="java.sql.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -174,14 +175,13 @@
             <th>Created At</th>
         </tr>
         <%
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/workshopdb", "root", "");
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM maintenance_records ORDER BY created_at DESC");
+    try {
+        Connection conn = DBConnection.getConnection();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM maintenance_records ORDER BY created_at DESC");
 
-                while (rs.next()) {
-        %>
+        while (rs.next()) {
+%>
       <tr>
     <td><%= rs.getInt("id") %></td>
     <td><%= rs.getString("plate_number") %></td>
