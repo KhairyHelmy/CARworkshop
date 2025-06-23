@@ -26,7 +26,7 @@ public class UpdateMaintenanceServlet extends HttpServlet {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/workshopdb", "root", "");
+                "DB_URL", "DB_USER", "DB_PASSWORD");
 
             String sql = "UPDATE maintenance_records SET plate_number=?, car_type=?, damage_description=?, repair_status=? WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);

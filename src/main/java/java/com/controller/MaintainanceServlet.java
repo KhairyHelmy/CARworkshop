@@ -27,7 +27,7 @@ public class MaintainanceServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/workshopdb", "root", "");
+                "DB_URL", "DB_USER", "DB_PASSWORD");
 
             String sql = "INSERT INTO maintenance_records (plate_number, car_type, damage_description, repair_status, created_at) VALUES (?, ?, ?, ?, NOW())";
 
