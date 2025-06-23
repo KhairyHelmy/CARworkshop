@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee           http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <!-- === Servlet Declarations === -->
+    <servlet>
+        <servlet-name>AdminloginServlet</servlet-name>
+        <servlet-class>com.controller.AdminloginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerloginServlet</servlet-name>
+        <servlet-class>com.controller.CustomerloginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.controller.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookingServlet</servlet-name>
+        <servlet-class>com.controller.BookingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmBooking</servlet-name>
+        <servlet-class>com.controller.ConfirmBooking</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PaymentBillServlet</servlet-name>
+        <servlet-class>com.controller.PaymentBillServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GenerateReceipt</servlet-name>
+        <servlet-class>com.controller.GenerateReceipt</servlet-class>
+    </servlet>
+    <!-- === Servlet Mappings === -->
+    <servlet-mapping>
+        <servlet-name>AdminloginServlet</servlet-name>
+        <url-pattern>/Adminlogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerloginServlet</servlet-name>
+        <url-pattern>/Customerlogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/Register</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingServlet</servlet-name>
+        <url-pattern>/Booking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmBooking</servlet-name>
+        <url-pattern>/ConfirmBooking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PaymentBillServlet</servlet-name>
+        <url-pattern>/PaymentBillServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerateReceipt</servlet-name>
+        <url-pattern>/GenerateReceipt</url-pattern>
+    </servlet-mapping>
+</web-app>
