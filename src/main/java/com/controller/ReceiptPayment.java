@@ -1,4 +1,4 @@
-package java.com.controller;
+package com.controller;
 
 import java.io.*;
 import java.sql.*;
