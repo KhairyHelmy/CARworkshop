@@ -12,6 +12,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Workshop Management System</title>
+    
+    <%
+    String message = request.getParameter("message");
+    if ("success".equals(message)) {
+%>
+    <script>alert("Login successfully!");</script>
+<%
+    }
+%>
+
 <style>
     body {
         background: url('gtr.jpg') no-repeat center center fixed;
