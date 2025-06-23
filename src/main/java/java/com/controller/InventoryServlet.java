@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-package com.controller;
+package java.com.controller;
 
 import com.util.DBConnection;
 import java.io.IOException;

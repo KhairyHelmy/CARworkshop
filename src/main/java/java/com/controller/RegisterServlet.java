@@ -1,5 +1,5 @@
  
-package com.controller;
+package java.com.controller;
 
 import com.util.DBConnection;
 import java.io.IOException;
