@@ -1,3 +1,4 @@
+<%@page import="com.util.DBConnection"%>
 <%@ page import="java.sql.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -114,30 +115,21 @@
                 </tr>
             </thead>
             <tbody>
-                <%
-                    // Database connection parameters
-                    String DB_URL = "jdbc:mysql://localhost:3306/workshopdb";
-                    String DB_USERNAME = "root";
-                    String DB_PASSWORD = "";
-                    String query = "SELECT id, name, phone, email, role FROM users";
+               <%
+    String query = "SELECT id, name, phone, email, role FROM users";
 
-                    Connection conn = null;
-                    Statement stmt = null;
-                    ResultSet rs = null;
+    Connection conn = null;
+    Statement stmt = null;
+    ResultSet rs = null;
 
-                    try {
-                        // Load MySQL JDBC Driver
-                        Class.forName("com.mysql.cj.jdbc.Driver");
-                        // Establish connection
-                        conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-                        // Create statement
-                        stmt = conn.createStatement();
-                        // Execute query
-                        rs = stmt.executeQuery(query);
+    try {
+        conn = DBConnection.getConnection(); // Guna class util
+        stmt = conn.createStatement();
+        rs = stmt.executeQuery(query);
 
-                        // Loop through the result set and display the data
-                        while (rs.next()) {
-                %>
+        while (rs.next()) {
+%>
+
                             <tr>
                                 <td><%= rs.getInt("id") %></td>
                                 <td><%= rs.getString("name") %></td>
