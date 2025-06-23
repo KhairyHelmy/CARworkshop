@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/AdminloginServlet")
 public class AdminloginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("name");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         String query = "SELECT * FROM users WHERE name = ? AND  password = ?";
@@ -24,7 +24,7 @@ public class AdminloginServlet extends HttpServlet {
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
               
-            System.out.println("name: " + username);
+            System.out.println("username: " + username);
             System.out.println("Password: " + password);
 
             if (connection == null || connection.isClosed()) {
