@@ -161,6 +161,13 @@ button:hover {
     text-decoration: none;
 }
 </style>
+<%@ page import="java.sql.*" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Booking</title>
+</head>
 <body>
     <div class="welcome">
         <h1>Car Workshop Management System</h1>
@@ -172,26 +179,25 @@ button:hover {
             <li><a href="Booking_Appoiment.jsp">Booking</a></li>
             <li><a href="Contact.jsp">Contact</a></li>
             <li><a href="Inventory.jsp">Maintenance</a></li>
-            <li><a href="StartLogin">Logout</a></li>
+            <li><a href="StartLogin.jsp">Logout</a></li>
         </ul>
     </nav>
-    <%
-        // Database connection parameters (from environment variables)
-String DB_URL = System.getenv("DB_URL");
-String DB_USERNAME = System.getenv("DB_USER");
-String DB_PASSWORD = System.getenv("DB_PASSWORD");
 
+    <%
+        String DB_URL = System.getenv("DB_URL");
+        String DB_USERNAME = System.getenv("DB_USER");
+        String DB_PASSWORD = System.getenv("DB_PASSWORD");
 
         String bookingId = request.getParameter("booking_id");
         String carOwnerName = request.getParameter("car_owner_name");
         String carPlateNumber = request.getParameter("car_plate_number");
-        String phone = request.getParameter("phone");
+        String phone = request.getParameter("phone"); // pastikan field form pakai name="phone"
         String carModel = request.getParameter("car_model");
         String serviceType = request.getParameter("service_type");
 
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(
-                 "UPDATE bookings SET car_owner_name = ?, car_plate_number = ?, phone = ?, car_model = ?, service_type = ? WHERE booking_id = ?")) {
+                 "UPDATE booking SET car_owner_name = ?, car_plate_number = ?, phone = ?, car_model = ?, service_type = ? WHERE booking_id = ?")) {
 
             stmt.setString(1, carOwnerName);
             stmt.setString(2, carPlateNumber);
@@ -209,7 +215,7 @@ String DB_PASSWORD = System.getenv("DB_PASSWORD");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            out.println("<script>alert('Error: " + e.getMessage() + "'); window.location='ManageBooking.jsp';</script>");
+            out.println("<script>alert('Error: " + e.getMessage().replaceAll("'", "") + "'); window.location='ManageBooking.jsp';</script>");
         }
     %>
 </body>

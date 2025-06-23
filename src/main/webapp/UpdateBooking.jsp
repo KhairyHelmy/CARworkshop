@@ -159,51 +159,40 @@ button:hover {
     String DB_PASSWORD = System.getenv("DB_PASSWORD");
 
     String bookingId = request.getParameter("booking_id");
-    String carOwnerName = request.getParameter("car_owner_name");
-    String carPlateNumber = request.getParameter("car_plate_number");
-    String phone = request.getParameter("contact_number");
-    String carModel = request.getParameter("car_model");
-    String serviceType = request.getParameter("service_type");
+    String carOwnerName = "", carPlateNumber = "", phone = "", carModel = "", serviceType = "";
 
-    Connection conn = null;
-    PreparedStatement stmt = null;
+    if (bookingId != null) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 
-    try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            String query = "SELECT * FROM booking WHERE booking_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, Integer.parseInt(bookingId));
+            ResultSet rs = stmt.executeQuery();
 
-        String sql = "UPDATE booking SET car_owner_name=?, car_plate_number=?, phone=?, car_model=?, service_type=? WHERE booking_id=?";
-        stmt = conn.prepareStatement(sql);
-        stmt.setString(1, carOwnerName);
-        stmt.setString(2, carPlateNumber);
-        stmt.setString(3, phone);
-        stmt.setString(4, carModel);
-        stmt.setString(5, serviceType);
-        stmt.setInt(6, Integer.parseInt(bookingId));
+            if (rs.next()) {
+                carOwnerName = rs.getString("car_owner_name");
+                carPlateNumber = rs.getString("car_plate_number");
+                phone = rs.getString("phone");
+                carModel = rs.getString("car_model");
+                serviceType = rs.getString("service_type");
+            }
 
-        int rows = stmt.executeUpdate();
-
-        if (rows > 0) {
-            response.sendRedirect("ManageBooking.jsp?update=success");
-        } else {
-            response.sendRedirect("ManageBooking.jsp?update=fail");
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        response.sendRedirect("ManageBooking.jsp?update=error");
-    } finally {
-        if (stmt != null) try { stmt.close(); } catch (SQLException ignored) {}
-        if (conn != null) try { conn.close(); } catch (SQLException ignored) {}
+    } else {
+        response.sendRedirect("ManageBooking.jsp");
     }
 %>
 
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Update Booking</title>
 </head>
 <body>
