@@ -116,7 +116,7 @@
             </thead>
             <tbody>
                <%
-    String query = "SELECT id, name, phone, email, role FROM users";
+    String query = "SELECT user_id, name, phone, email, role FROM users";
 
     Connection conn = null;
     Statement stmt = null;
@@ -131,7 +131,7 @@
 %>
 
                             <tr>
-                                <td><%= rs.getInt("id") %></td>
+                                <td><%= rs.getInt("user_id") %></td>
                                 <td><%= rs.getString("name") %></td>
                                 <td><%= rs.getString("phone") %></td>
                                 <td><%= rs.getString("email") %></td>
