@@ -114,7 +114,7 @@
                     <button type="button" style="width: 100%;">Register</button>
                     
                 </a>
-              <a href="StartLogin.jsp" style="width: 100%;">
+              <a href="Homepage.jsp" style="width: 100%;">
                     <button type="button" style="width: 100%;">Back</button>
                     
                 </a>
