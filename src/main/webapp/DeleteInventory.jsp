@@ -35,7 +35,7 @@ String DB_PASSWORD = System.getenv("DB_PASSWORD");
                 return;
             }
 
-            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD); PreparedStatement stmt = conn.prepareStatement("DELETE FROM spare_part WHERE part_id = ?")) {
+            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD); PreparedStatement stmt = conn.prepareStatement("DELETE FROM inventory WHERE part_id = ?")) {
 
                 stmt.setInt(1, part_id);
                 int rowsDeleted = stmt.executeUpdate();

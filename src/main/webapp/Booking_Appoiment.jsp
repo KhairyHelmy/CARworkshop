@@ -124,7 +124,7 @@
             <li><a href="Booking_Appoiment.jsp">Booking</a></li>
             <li><a href="Contact.jsp">Contact</a></li>
             <li><a href="Inventory.jsp">Maintenance</a></li>
-            <li><a href="StartLogin.jsp">Logout</a></li>
+            <li><a href="LogoutServlet">Logout</a></li>
         </ul>
     </nav>
 
