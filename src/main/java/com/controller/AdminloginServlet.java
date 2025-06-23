@@ -24,7 +24,7 @@ public class AdminloginServlet extends HttpServlet {
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
               
-            System.out.println("username: " + username);
+            System.out.println("Username: " + username);
             System.out.println("Password: " + password);
 
             if (connection == null || connection.isClosed()) {
@@ -40,7 +40,7 @@ public class AdminloginServlet extends HttpServlet {
 
             if (resultSet.next()) {
                 HttpSession session = request.getSession();
-                session.setAttribute("name", username);
+                session.setAttribute("username", username);
                 response.sendRedirect("Homepage.jsp");
             } else {
                 System.out.println("Invalid login attempt for username: " + username);
