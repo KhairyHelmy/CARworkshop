@@ -26,9 +26,9 @@
     <h2>Customer Booking List</h2>
 
     <%
-        String jdbcURL = "jdbc:mysql://localhost:3306/WorkShopDB"; // Update your DB name if different
-        String dbUser = "root"; // Your DB username
-        String dbPassword = ""; // Your DB password
+        String DB_URL = System.getenv("DB_URL");
+            String DB_USERNAME = System.getenv("DB_USER");
+            String DB_PASSWORD = System.getenv("DB_PASSWORD");
 
         Connection conn = null;
         Statement stmt = null;
@@ -36,7 +36,7 @@
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); // MySQL 8+ driver
-            conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+            conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 
             String query = "SELECT u.name, u.phone, b.car_plate_num " +
                            "FROM Users u " +

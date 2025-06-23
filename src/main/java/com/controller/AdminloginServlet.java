@@ -41,7 +41,7 @@ public class AdminloginServlet extends HttpServlet {
             if (resultSet.next()) {
                 HttpSession session = request.getSession();
                 session.setAttribute("username", username);
-                response.sendRedirect("Homepage.jsp?message=success"); // hanya redirect sekali
+                response.sendRedirect("Homepage.jsp");
             } else {
                 System.out.println("Invalid login attempt for username: " + username);
                 response.sendRedirect("AdminLogin.jsp?message=invalidhere");
@@ -49,8 +49,6 @@ public class AdminloginServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendRedirect("AdminLogin.jsp?message=error");
-        }// Selepas login berjaya
-        response.sendRedirect("Homepage.jsp?message=success");
-
+        }
     }
 }

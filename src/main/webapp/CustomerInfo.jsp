@@ -113,17 +113,19 @@
                     PreparedStatement pstmt = null;
                     ResultSet rs = null;
                     
-                    try {
-                        // Load JDBC driver (adjust for your database)
-                        Class.forName("com.mysql.cj.jdbc.Driver");
-                        
-                        // Database connection - UPDATE THESE VALUES
-                        String dbUrl = "jdbc:mysql://localhost:3306/your_database";
-                        String dbUser = "your_username";
-                        String dbPass = "your_password";
-                        
-                        conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
-                        
+               try {
+    // Load JDBC driver (adjust for your database)
+    Class.forName("com.mysql.cj.jdbc.Driver");
+
+    // Database connection using environment variables
+    String dbUrl = System.getenv("DB_URL");
+    String dbUser = System.getenv("DB_USER");
+    String dbPass = System.getenv("DB_PASSWORD");
+
+    conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+
+    // Continue with your logic...
+
                         // SQL query with LEFT JOIN for license plates (assuming a Vehicles table)
                         String sql = "SELECT c.cust_id, c.name, c.phone, c.email, v.license_plate " +
                                      "FROM Customers c " +
