@@ -1,4 +1,3 @@
-<%@page import="com.util.DBConnection"%>
 <%@ page import="java.sql.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -115,23 +114,36 @@
                 </tr>
             </thead>
             <tbody>
-               <%
-    String query = "SELECT user_id, name, phone, email, role FROM users";
+<%
+    // Ambil maklumat dari environment variables
+    String DB_URL = System.getenv("DB_URL");
+    String DB_USERNAME = System.getenv("DB_USER");
+    String DB_PASSWORD = System.getenv("DB_PASSWORD");
+    String query = "SELECT id, name, phone, email, role FROM users";
 
     Connection conn = null;
     Statement stmt = null;
     ResultSet rs = null;
 
     try {
-        conn = DBConnection.getConnection(); // Guna class util
+        // Load MySQL JDBC Driver
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        // Establish connection
+        conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+
+        // Create statement
         stmt = conn.createStatement();
+
+        // Execute query
         rs = stmt.executeQuery(query);
 
+        // Loop through the result set and display the data
         while (rs.next()) {
 %>
 
                             <tr>
-                                <td><%= rs.getInt("user_id") %></td>
+                                <td><%= rs.getInt("id") %></td>
                                 <td><%= rs.getString("name") %></td>
                                 <td><%= rs.getString("phone") %></td>
                                 <td><%= rs.getString("email") %></td>

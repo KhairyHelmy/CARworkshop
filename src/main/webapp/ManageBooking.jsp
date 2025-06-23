@@ -114,30 +114,32 @@
                 </tr>
             </thead>
             <tbody>
-                <%
-                    // Database connection parameters
-                    String DB_URL = "jdbc:mysql://localhost:3306/workshopdb";
-                    String DB_USERNAME = "root";
-                    String DB_PASSWORD = "";
-                    String query = "SELECT booking_id, car_owner_name, car_plate_number, phone, car_model, service_type FROM booking";
+<%
+    // Dulu (Salah)
+    // String DB_URL = "jdbc:mysql://localhost:3306/workshopdb";
+    // String DB_USERNAME = "root";
+    // String DB_PASSWORD = "";
 
-                    Connection conn = null;
-                    Statement stmt = null;
-                    ResultSet rs = null;
+    // Sekarang (Betul)
+    String DB_URL = System.getenv("DB_URL");
+    String DB_USERNAME = System.getenv("DB_USER");
+    String DB_PASSWORD = System.getenv("DB_PASSWORD");
 
-                    try {
-                        // Load MySQL JDBC Driver
-                        Class.forName("com.mysql.cj.jdbc.Driver");
-                        // Establish connection
-                        conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-                        // Create statement
-                        stmt = conn.createStatement();
-                        // Execute query
-                        rs = stmt.executeQuery(query);
+    String query = "SELECT booking_id, car_owner_name, car_plate_number, phone, car_model, service_type FROM booking";
 
-                        // Loop through the result set and display the data
-                        while (rs.next()) {
-                %>
+    Connection conn = null;
+    Statement stmt = null;
+    ResultSet rs = null;
+
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+        stmt = conn.createStatement();
+        rs = stmt.executeQuery(query);
+
+        while (rs.next()) {
+%>
+
                             <tr>
                                 <td><%= rs.getInt("booking_id") %></td>
                                 <td><%= rs.getString("car_owner_name") %></td>

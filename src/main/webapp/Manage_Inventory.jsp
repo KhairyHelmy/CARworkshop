@@ -121,24 +121,26 @@
                 </tr>
             </thead>
             <tbody>
-                <%
-                    String DB_URL = "jdbc:mysql://localhost:3306/workshopdb";
-                    String DB_USERNAME = "root";
-                    String DB_PASSWORD = "";
-                    String query = "SELECT part_id, part_name, quantity_in_stock, supplier_id, price, part_type FROM inventory";
+<%
+    // Ambil connection info dari environment variables
+    String DB_URL = System.getenv("DB_URL");
+    String DB_USERNAME = System.getenv("DB_USER");
+    String DB_PASSWORD = System.getenv("DB_PASSWORD");
+    String query = "SELECT part_id, part_name, quantity_in_stock, supplier_id, price, part_type FROM inventory";
 
-                    Connection conn = null;
-                    Statement stmt = null;
-                    ResultSet rs = null;
+    Connection conn = null;
+    Statement stmt = null;
+    ResultSet rs = null;
 
-                    try {
-                        Class.forName("com.mysql.cj.jdbc.Driver");
-                        conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-                        stmt = conn.createStatement();
-                        rs = stmt.executeQuery(query);
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+        stmt = conn.createStatement();
+        rs = stmt.executeQuery(query);
 
-                        while (rs.next()) {
-                %>
+        while (rs.next()) {
+%>
+
                             <tr>
                                 <td><%= rs.getInt("part_id") %></td>
                                 <td><%= rs.getString("part_name") %></td>
@@ -171,6 +173,7 @@
                         }
                     }
                 %>
+                
             </tbody>
         </table>
     </div>
