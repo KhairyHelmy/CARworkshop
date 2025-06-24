@@ -115,14 +115,7 @@
                 <label for="Email">Email</label>
                 <input type="Email" id="Email" name="email" placeholder="s@gmail.com" required>
                 <label for="registerRole" class="form-label">Role</label>
-                <select class="form-select" id="registerRole" name="role" required>
-                    <option value="" disabled selected>Select your role</option>
-                    <option value="admin">admin</option>
-                    <option value="customer">Customer</option>
-                    <option value="Mechanic">Mechanic</option>
-                    <option value="Manager">Manager</option>
-                    
-                </select>
+                
 
 
 

@@ -123,9 +123,7 @@
     <nav>
         <ul class="nav">
             <li><a href="Homepage.jsp">Home</a></li>
-            <li><a href="Booking_Appoiment.jsp">Booking</a></li>
-            <li><a href="Contact.jsp">Contact</a></li>
-            <li><a href="Inventory.jsp">Maintenance</a></li>
+            <li><a href="Manage_Inventory.jsp">Inventory Management</a></li>
             <li><a href="LogoutServlet">Logout</a></li>
         </ul>
     </nav>

@@ -179,8 +179,8 @@ ul.nav li.user-info {
 
     <div class="container">
         <% 
-            String[] links = { "Contact.jsp", "Booking_Appoiment.jsp","ManageBooking.jsp","ManageRegister.jsp", "MaintainanceCar.jsp","PaymentBill.jsp","Inventory_Sparepart.jsp"};
-            String[] labels = { "Contact", "Booking","ManageBooking","ManageRegister","Maintainance", "payment","Inventory"};
+            String[] links = {  "Booking_Appoiment.jsp","ManageBooking.jsp","ManageRegister.jsp", "MaintainanceCar.jsp","PaymentBill.jsp","Inventory_Sparepart.jsp"};
+            String[] labels = {  "Booking","ManageBooking","ManageRegister","Maintainance", "payment","Inventory"};
             for(int i = 0; i < links.length; i++) {
         %>
             <a href="<%= links[i] %>"><%= labels[i] %></a>

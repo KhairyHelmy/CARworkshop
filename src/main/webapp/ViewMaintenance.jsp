@@ -141,7 +141,7 @@
     
     <nav>
     <ul class="nav">
-        <li><a href="index.jsp">Home</a></li>
+        <li><a href="Homepage.jsp">Home</a></li>
         <li><a href="booking.jsp">Booking</a></li>
         <li><a href="ViewMaintenance.jsp">Progress</a></li>
         li><a href="LogoutServlet">Logout</a></li>
