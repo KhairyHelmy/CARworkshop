@@ -124,11 +124,7 @@
                     <input type="submit" value="Submit">
                 </form>
 
-HttpSession session = request.getSession();
-session.setAttribute("registerSuccess", "Registration completed successfully!");
-response.sendRedirect("StartLogin.jsp"); // atau ke Homepage.jsp kalau sesuai
-
-                    
+ 
             </div>
             </form>
         </div>
