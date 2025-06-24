@@ -67,6 +67,23 @@
     ul.nav a:hover {
         color: lightgray; /* Change link color on hover */
     }
+    ul.nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between; /* Pisahkan kiri & kanan */
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+ul.nav li.user-info {
+    margin-left: auto;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+}
+
    footer {
             left: 0;
             bottom: 0;
@@ -144,6 +161,18 @@
             <li><a href="MaintainanceCar.jsp">Maintainance</a></li>
             <li><a href="LogoutServlet">Logout</a></li>
             <li><a href="Register.jsp">RegisterUsers</a></li>
+            
+             <li class="user-info">
+            <% 
+                String username = (String) session.getAttribute("username");
+                String role = (String) session.getAttribute("role");
+
+                if (username != null && role != null) {
+            %>
+                <span><%= username.toUpperCase() %> (<%= role.toUpperCase() %>)</span>
+            <%
+                }
+            %>
         </ul>
     </nav>
 
