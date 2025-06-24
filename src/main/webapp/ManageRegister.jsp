@@ -156,12 +156,13 @@
     <td><%= rs.getString("email") %></td>
     <td><%= rs.getString("role") %></td>
     <td>
-        <form action="EditRegister.jsp" method="POST" style="display:inline;">
+        <form action="EditRegister.jsp" method="get" style="display:inline;">
             <input type="hidden" name="user_id" value="<%= rs.getInt("user_id") %>">
             <button type="submit">Update</button>
         </form>
     </td>
 </tr>
+
 <%
         }
     } catch (Exception e) {

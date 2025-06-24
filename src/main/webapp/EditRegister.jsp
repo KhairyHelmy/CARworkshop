@@ -166,9 +166,11 @@ button:hover {
 <%@ page import="java.sql.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Update Register</title>
+    <!-- (CSS dan style anda tetap kekal seperti asal) -->
 </head>
 <body>
 
@@ -194,12 +196,13 @@ button:hover {
     String DB_USERNAME = System.getenv("DB_USER");
     String DB_PASSWORD = System.getenv("DB_PASSWORD");
 
+    // Guna parameter 'user_id' sepanjang masa (untuk GET dan POST)
     String id = request.getParameter("user_id");
     String name = "", password = "", phone = "", email = "", role = "";
 
     // Handle POST request (update)
     if ("POST".equalsIgnoreCase(request.getMethod())) {
-        id = request.getParameter("user_id");
+        id = request.getParameter("user_id"); // kekal gunakan 'user_id'
         name = request.getParameter("name");
         password = request.getParameter("password");
         phone = request.getParameter("phone");
@@ -264,7 +267,7 @@ button:hover {
     if (id != null) {
         try (
             Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE user_id = ?");
         ) {
             stmt.setInt(1, Integer.parseInt(id));
             ResultSet rs = stmt.executeQuery();
@@ -297,15 +300,17 @@ button:hover {
         }
     } else {
 %>
-    
+    <script>
+        alert("Invalid User ID!");
+        window.location.href = "ManageRegister.jsp";
+    </script>
 <%
         return;
     }
 %>
- 
 
 <form method="post" action="">
-    <input type="hidden" name="id" value="<%= id %>">
+    <input type="hidden" name="user_id" value="<%= id %>">
 
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" value="<%= name %>" required><br>
