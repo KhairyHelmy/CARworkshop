@@ -194,12 +194,12 @@ button:hover {
     String DB_USERNAME = System.getenv("DB_USER");
     String DB_PASSWORD = System.getenv("DB_PASSWORD");
 
-    String id = request.getParameter("id");
+    String id = request.getParameter("user_id");
     String name = "", password = "", phone = "", email = "", role = "";
 
     // Handle POST request (update)
     if ("POST".equalsIgnoreCase(request.getMethod())) {
-        id = request.getParameter("id");
+        id = request.getParameter("user_id");
         name = request.getParameter("name");
         password = request.getParameter("password");
         phone = request.getParameter("phone");
@@ -221,7 +221,7 @@ button:hover {
         try (
             Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
             PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE users SET name=?, password=?, phone=?, email=?, role=? WHERE id=?"
+                "UPDATE users SET name=?, password=?, phone=?, email=?, role=? WHERE user_id=?"
             );
         ) {
             stmt.setString(1, name);
