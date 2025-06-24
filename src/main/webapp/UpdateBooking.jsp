@@ -156,7 +156,7 @@
                 text-decoration: none;
             }
         </style>
-    <%@ page import="java.sql.*" %>
+<%@ page import="java.sql.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -164,23 +164,6 @@
     <title>Update Booking</title>
 </head>
 <body>
-
-<div class="welcome">
-    <h1>Car Workshop Management System</h1>
-</div>
-
-<nav>
-    <ul class="nav">
-        <li><a href="Homepage.jsp">Home</a></li>
-        <li><a href="Booking_Appoiment.jsp">Booking</a></li>
-        <li><a href="Contact.jsp">Contact</a></li>
-        <li><a href="Inventory.jsp">Maintenance</a></li>
-        <li><a href="StartLogin.jsp">Logout</a></li>
-    </ul>
-</nav>
-
-<div class="container">
-    <h1>Update Booking</h1>
 
 <%
     String DB_URL = System.getenv("DB_URL");
@@ -190,18 +173,32 @@
     String bookingId = request.getParameter("booking_id");
     String carOwnerName = "", carPlateNumber = "", phone = "", carModel = "", serviceType = "";
 
-    // Handle form submission (POST)
+    // Check if it's a POST form submission
     if ("POST".equalsIgnoreCase(request.getMethod())) {
         bookingId = request.getParameter("booking_id");
         carOwnerName = request.getParameter("car_owner_name");
         carPlateNumber = request.getParameter("car_plate_number");
-        phone = request.getParameter("contact_number"); // matching input name
+        phone = request.getParameter("contact_number");
         carModel = request.getParameter("car_model");
         serviceType = request.getParameter("service_type");
 
+        // Validate all fields
+        if (carOwnerName == null || carOwnerName.trim().isEmpty() ||
+            carPlateNumber == null || phone == null || carModel == null || serviceType == null) {
+%>
+            <script>
+                alert("Please fill in all required fields.");
+                window.history.back();
+            </script>
+<%
+            return;
+        }
+
         try (
             Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-            PreparedStatement stmt = conn.prepareStatement("UPDATE booking SET car_owner_name=?, car_plate_number=?, phone=?, car_model=?, service_type=? WHERE booking_id=?");
+            PreparedStatement stmt = conn.prepareStatement(
+                "UPDATE booking SET car_owner_name=?, car_plate_number=?, phone=?, car_model=?, service_type=? WHERE booking_id=?"
+            );
         ) {
             stmt.setString(1, carOwnerName);
             stmt.setString(2, carPlateNumber);
@@ -211,7 +208,6 @@
             stmt.setInt(6, Integer.parseInt(bookingId));
 
             int rows = stmt.executeUpdate();
-
             if (rows > 0) {
 %>
                 <script>
@@ -222,7 +218,7 @@
             } else {
 %>
                 <script>
-                    alert("Failed to update booking.");
+                    alert("Update failed.");
                     window.location.href = "ManageBooking.jsp";
                 </script>
 <%
@@ -239,58 +235,73 @@
         }
     }
 
-    // Else: Load data to display in form (GET)
-    if (bookingId == null) {
-        out.println("<p>Invalid booking ID!</p>");
-        return;
-    }
+    // GET method: fetch data to pre-fill form
+    if (bookingId != null) {
+        try (
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM booking WHERE booking_id = ?");
+        ) {
+            stmt.setInt(1, Integer.parseInt(bookingId));
+            ResultSet rs = stmt.executeQuery();
 
-    try (
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM booking WHERE booking_id = ?");
-    ) {
-        stmt.setInt(1, Integer.parseInt(bookingId));
-        ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                carOwnerName = rs.getString("car_owner_name");
+                carPlateNumber = rs.getString("car_plate_number");
+                phone = rs.getString("phone");
+                carModel = rs.getString("car_model");
+                serviceType = rs.getString("service_type");
+            } else {
+%>
+                <script>
+                    alert("Booking not found.");
+                    window.location.href = "ManageBooking.jsp";
+                </script>
+<%
+                return;
+            }
 
-        if (rs.next()) {
-            carOwnerName = rs.getString("car_owner_name");
-            carPlateNumber = rs.getString("car_plate_number");
-            phone = rs.getString("phone");
-            carModel = rs.getString("car_model");
-            serviceType = rs.getString("service_type");
-        } else {
-            out.println("<p>Booking not found!</p>");
+            rs.close();
+        } catch (Exception e) {
+%>
+            <script>
+                alert("Error: <%= e.getMessage().replace("'", "") %>");
+                window.location.href = "ManageBooking.jsp";
+            </script>
+<%
             return;
         }
-
-        rs.close();
-    } catch (Exception e) {
-        out.println("<p>Error loading booking: " + e.getMessage() + "</p>");
+    } else {
+%>
+    <script>
+        alert("Invalid Booking ID!");
+        window.location.href = "ManageBooking.jsp";
+    </script>
+<%
         return;
     }
 %>
 
-    <form method="post" action="UpdateBooking.jsp">
-        <input type="hidden" name="booking_id" value="<%= bookingId %>">
+<h2>Update Booking</h2>
+<form method="post" action="">
+    <input type="hidden" name="booking_id" value="<%= bookingId %>">
 
-        <label for="car_owner_name">Car Owner Name</label>
-        <input type="text" id="car_owner_name" name="car_owner_name" value="<%= carOwnerName %>" required>
+    <label>Car Owner Name:</label>
+    <input type="text" name="car_owner_name" value="<%= carOwnerName %>" required><br>
 
-        <label for="car_plate_number">Car Plate Number</label>
-        <input type="text" id="car_plate_number" name="car_plate_number" value="<%= carPlateNumber %>" required>
+    <label>Car Plate Number:</label>
+    <input type="text" name="car_plate_number" value="<%= carPlateNumber %>" required><br>
 
-        <label for="phone">Phone</label>
-        <input type="text" id="phone" name="contact_number" value="<%= phone %>" required>
+    <label>Phone:</label>
+    <input type="text" name="contact_number" value="<%= phone %>" required><br>
 
-        <label for="car_model">Car Model</label>
-        <input type="text" id="car_model" name="car_model" value="<%= carModel %>" required>
+    <label>Car Model:</label>
+    <input type="text" name="car_model" value="<%= carModel %>" required><br>
 
-        <label for="service_type">Service Type</label>
-        <input type="text" id="service_type" name="service_type" value="<%= serviceType %>" required>
+    <label>Service Type:</label>
+    <input type="text" name="service_type" value="<%= serviceType %>" required><br>
 
-        <button type="submit">Update Booking</button>
-    </form>
-</div>
+    <button type="submit">Update Booking</button>
+</form>
 
 </body>
 </html>

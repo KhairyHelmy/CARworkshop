@@ -146,9 +146,11 @@
                         <td><%= rs.getString("car_model")%></td>
                         <td><%= rs.getString("service_type")%></td>
                         <td>
-                            <form action="UpdateBooking.jsp" method="post" style="display:inline;">
+                            <form action="UpdateBooking.jsp" method="get" style="display:inline;">
                                 <input type="hidden" name="booking_id" value="<%= rs.getInt("booking_id")%>">
                                 <button type="submit">Update</button>
+                            </form>
+
                             </form>
                             <form action="DeleteBooking.jsp" method="post" style="display:inline;">
                                 <input type="hidden" name="booking_id" value="<%= rs.getInt("booking_id")%>">
