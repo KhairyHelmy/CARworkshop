@@ -58,9 +58,7 @@ public class RegisterServlet extends HttpServlet {
             // Handle database errors
             response.sendRedirect("Register.jsp?message=error");
 
-            HttpSession session = request.getSession();
-            session.setAttribute("registerSuccess", "Registration completed successfully!");
-            response.sendRedirect("StartLogin.jsp"); // atau ke Homepage.jsp kalau sesuai
+      
         }
     }
 }
