@@ -281,6 +281,7 @@
     }
 %>
 
+
 <h2>Update Booking</h2>
 <form method="post" action="">
     <input type="hidden" name="booking_id" value="<%= bookingId %>">

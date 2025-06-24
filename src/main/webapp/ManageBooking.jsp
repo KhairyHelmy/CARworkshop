@@ -88,99 +88,115 @@
             }
         </style>
     </head>
-    <body>
-        <nav>
-            <ul class="nav">
-                <li><a href="Homepage.jsp">Home</a></li>
-                <li><a href="Booking_Appoiment.jsp">Booking</a></li>
-                <li><a href="Contact.jsp">Contact</a></li>
-                <li><a href="Inventory.jsp">Maintainance</a></li>
-                <li><a href="StartLogin.jsp">Logout</a></li>
-                <li><a href="Homepage.jsp">Home</a></li>
-            </ul>
-        </nav>
-        <div class="container">
-            <h1>Manage Bookings</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>Car Owner Name</th>
-                        <th>Car Plate Number</th>
-                        <th>Contact Number</th>
-                        <th>Car Model</th>
-                        <th>Service Type</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        // Database connection parameters
-                        String DB_URL = System.getenv("DB_URL");
-                        String DB_USERNAME = System.getenv("DB_USER");
-                        String DB_PASSWORD = System.getenv("DB_PASSWORD");
-                        String query = "SELECT booking_id, car_owner_name, car_plate_number, phone, car_model, service_type FROM booking";
+    <%
+    // Delete booking if delete_id is passed
+    String DB_URL = System.getenv("DB_URL");
+    String DB_USERNAME = System.getenv("DB_USER");
+    String DB_PASSWORD = System.getenv("DB_PASSWORD");
 
-                        Connection conn = null;
-                        Statement stmt = null;
-                        ResultSet rs = null;
+    String deleteId = request.getParameter("delete_id");
+    if (deleteId != null) {
+        try (
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM booking WHERE booking_id = ?");
+        ) {
+            stmt.setInt(1, Integer.parseInt(deleteId));
+            int rows = stmt.executeUpdate();
 
-                        try {
-                            // Load MySQL JDBC Driver
-                            Class.forName("com.mysql.cj.jdbc.Driver");
-                            // Establish connection
-                            conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-                            // Create statement
-                            stmt = conn.createStatement();
-                            // Execute query
-                            rs = stmt.executeQuery(query);
+            if (rows > 0) {
+%>
+<script>
+    alert("Booking deleted successfully!");
+    window.location.href = "ManageBooking.jsp";
+</script>
+<%
+            } else {
+%>
+<script>
+    alert("Delete failed. Booking not found.");
+    window.location.href = "ManageBooking.jsp";
+</script>
+<%
+            }
+            return;
+        } catch (Exception e) {
+%>
+<script>
+    alert("Error: <%= e.getMessage().replace("'", "") %>");
+    window.location.href = "ManageBooking.jsp";
+</script>
+<%
+            return;
+        }
+    }
+%>
 
-                            // Loop through the result set and display the data
-                            while (rs.next()) {
-                    %>
-                    <tr>
-                        <td><%= rs.getInt("booking_id")%></td>
-                        <td><%= rs.getString("car_owner_name")%></td>
-                        <td><%= rs.getString("car_plate_number")%></td>
-                        <td><%= rs.getString("phone")%></td>
-                        <td><%= rs.getString("car_model")%></td>
-                        <td><%= rs.getString("service_type")%></td>
-                        <td>
-                            <form action="UpdateBooking.jsp" method="get" style="display:inline;">
-                                <input type="hidden" name="booking_id" value="<%= rs.getInt("booking_id")%>">
-                                <button type="submit">Update</button>
-                            </form>
+<nav>
+    <ul class="nav">
+        <li><a href="Homepage.jsp">Home</a></li>
+        <li><a href="Booking_Appoiment.jsp">Booking</a></li>
+        <li><a href="Contact.jsp">Contact</a></li>
+        <li><a href="Inventory.jsp">Maintainance</a></li>
+        <li><a href="StartLogin.jsp">Logout</a></li>
+    </ul>
+</nav>
 
-                            </form>
-                            <form action="DeleteBooking.jsp" method="post" style="display:inline;">
-                                <input type="hidden" name="booking_id" value="<%= rs.getInt("booking_id")%>">
-                                <button type="submit">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <%
-                            }
-                        } catch (Exception e) {
-                            out.println("<tr><td colspan='7'>Error: " + e.getMessage() + "</td></tr>");
-                        } finally {
-                            // Close resources
-                            try {
-                                if (rs != null) {
-                                    rs.close();
-                                }
-                                if (stmt != null) {
-                                    stmt.close();
-                                }
-                                if (conn != null) {
-                                    conn.close();
-                                }
-                            } catch (SQLException ex) {
-                                ex.printStackTrace();
-                            }
-                        }
-                    %>
-                </tbody>
-            </table>
-        </div>
-    </body>
+<div class="container">
+    <h1>Manage Bookings</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Car Owner Name</th>
+                <th>Car Plate Number</th>
+                <th>Contact Number</th>
+                <th>Car Model</th>
+                <th>Service Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+<%
+    String query = "SELECT booking_id, car_owner_name, car_plate_number, phone, car_model, service_type FROM booking";
+
+    try (
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+    ) {
+        while (rs.next()) {
+%>
+            <tr>
+                <td><%= rs.getInt("booking_id") %></td>
+                <td><%= rs.getString("car_owner_name") %></td>
+                <td><%= rs.getString("car_plate_number") %></td>
+                <td><%= rs.getString("phone") %></td>
+                <td><%= rs.getString("car_model") %></td>
+                <td><%= rs.getString("service_type") %></td>
+                <td>
+                    <!-- Update Button -->
+                    <form action="UpdateBooking.jsp" method="get" style="display:inline;">
+                        <input type="hidden" name="booking_id" value="<%= rs.getInt("booking_id") %>">
+                        <button type="submit">Update</button>
+                    </form>
+
+                    <!-- Delete Button -->
+                    <form method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this booking?');">
+                        <input type="hidden" name="delete_id" value="<%= rs.getInt("booking_id") %>">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+<%
+        }
+    } catch (Exception e) {
+%>
+        <tr><td colspan="7">Error: <%= e.getMessage() %></td></tr>
+<%
+    }
+%>
+        </tbody>
+    </table>
+</div>
+</body>
 </html>
