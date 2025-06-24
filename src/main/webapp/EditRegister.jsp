@@ -107,7 +107,14 @@ button {
     cursor: pointer;
     margin-top: 20px;
 }
-
+button {
+                background-color: #1100bb;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+                border-radius: 3px;
+            }
 button:hover {
     background-color: #004090;
 }

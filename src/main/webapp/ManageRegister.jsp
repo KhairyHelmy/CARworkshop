@@ -83,6 +83,14 @@
             cursor: pointer;
             border-radius: 3px;
         }
+        button {
+                background-color: #1100bb;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+                border-radius: 3px;
+            }
         button:hover {
             background-color: #1100bb;
         }
@@ -157,8 +165,8 @@
 </tr>
 
  <!-- Update Button -->
-                    <form action="UpdateBooking.jsp" method="get" style="display:inline;">
-                        <input type="hidden" name="booking_id" value="<%= rs.getInt("booking_id") %>">
+                    <form action="EditRegister.jsp" method="get" style="display:inline;">
+                        <input type="hidden" name="user_id" value="<%= rs.getInt("user_id") %>">
                         <button type="submit">Update</button>
                     </form>
 <%
