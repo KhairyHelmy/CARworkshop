@@ -83,14 +83,7 @@
             cursor: pointer;
             border-radius: 3px;
         }
-        button {
-                background-color: #1100bb;
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                cursor: pointer;
-                border-radius: 3px;
-            }
+        
         button:hover {
             background-color: #1100bb;
         }
@@ -162,13 +155,13 @@
     <td><%= rs.getString("phone") %></td>
     <td><%= rs.getString("email") %></td>
     <td><%= rs.getString("role") %></td>
+    <td>
+        <form action="EditRegister.jsp" method="get" style="display:inline;">
+            <input type="hidden" name="id" value="<%= rs.getInt("user_id") %>">
+            <button type="submit">Update</button>
+        </form>
+    </td>
 </tr>
-
- <!-- Update Button -->
-                    <form action="EditRegister.jsp" method="get" style="display:inline;">
-                        <input type="hidden" name="user_id" value="<%= rs.getInt("user_id") %>">
-                        <button type="submit">Update</button>
-                    </form>
 <%
         }
     } catch (Exception e) {

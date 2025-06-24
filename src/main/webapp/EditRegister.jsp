@@ -297,14 +297,12 @@ button:hover {
         }
     } else {
 %>
-    <script>
-        alert("Invalid User ID!");
-        window.location.href = "ManageRegister.jsp";
-    </script>
+    
 <%
         return;
     }
 %>
+ 
 
 <form method="post" action="">
     <input type="hidden" name="id" value="<%= id %>">
