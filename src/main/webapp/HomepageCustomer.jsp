@@ -124,7 +124,17 @@
             <a href="<%= links[i] %>"><%= labels[i] %></a>
         <% } %>
     </div>
-
+<%
+    String loginSuccess = (String) session.getAttribute("loginSuccess");
+    if (loginSuccess != null) {
+%>
+    <script>
+        alert("<%= loginSuccess %>");
+    </script>
+<%
+        session.removeAttribute("loginSuccess"); // buang supaya tak muncul lagi next time
+    }
+%>
     <hr>
 
      <footer>
