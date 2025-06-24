@@ -156,97 +156,170 @@ button:hover {
 }
 </style>
 </head>
+<%@ page import="java.sql.*" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Register</title>
+</head>
 <body>
-    
-    <div class="welcome">
-        <h1>Car Workshop Management System</h1>
-    </div>
 
-    <nav>
-        <ul class="nav">
-            <li><a href="Homepage.jsp">Home</a></li>
-            <li><a href="Booking_Appoiment.jsp">Booking</a></li>
-            <li><a href="Contact.jsp">Contact</a></li>
-            <li><a href="Inventory.jsp">Maintenance</a></li>
-            <li><a href="StartLogin.jsp">Logout</a></li>
-        </ul>
-    </nav>
-    <div class="container">
-        <h1>Update Booking</h1>
-        <%
-            // Database connection parameters
-            // Database connection parameters (from environment variables)
-String DB_URL = System.getenv("DB_URL");
-String DB_USERNAME = System.getenv("DB_USER");
-String DB_PASSWORD = System.getenv("DB_PASSWORD");
+<div class="welcome">
+    <h1>Car Workshop Management System</h1>
+</div>
 
-            Connection conn = null;
-            PreparedStatement stmt = null;
-            ResultSet rs = null;
+<nav>
+    <ul class="nav">
+        <li><a href="Homepage.jsp">Home</a></li>
+        <li><a href="Booking_Appoiment.jsp">Booking</a></li>
+        <li><a href="Contact.jsp">Contact</a></li>
+        <li><a href="Inventory.jsp">Maintenance</a></li>
+        <li><a href="StartLogin.jsp">Logout</a></li>
+    </ul>
+</nav>
 
-         
-     String id = request.getParameter("id");
-            if (id == null) {
-                out.println("<p>Invalid booking ID!</p>");
+<div class="container">
+    <h1>Update Register</h1>
+
+<%
+    String DB_URL = System.getenv("DB_URL");
+    String DB_USERNAME = System.getenv("DB_USER");
+    String DB_PASSWORD = System.getenv("DB_PASSWORD");
+
+    String id = request.getParameter("id");
+    String name = "", password = "", phone = "", email = "", role = "";
+
+    // Handle POST request (update)
+    if ("POST".equalsIgnoreCase(request.getMethod())) {
+        id = request.getParameter("id");
+        name = request.getParameter("name");
+        password = request.getParameter("password");
+        phone = request.getParameter("phone");
+        email = request.getParameter("email");
+        role = request.getParameter("role");
+
+        // Validate
+        if (name == null || name.trim().isEmpty() ||
+            password == null || phone == null || email == null || role == null) {
+%>
+            <script>
+                alert("Please fill in all fields.");
+                window.history.back();
+            </script>
+<%
+            return;
+        }
+
+        try (
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            PreparedStatement stmt = conn.prepareStatement(
+                "UPDATE users SET name=?, password=?, phone=?, email=?, role=? WHERE id=?"
+            );
+        ) {
+            stmt.setString(1, name);
+            stmt.setString(2, password);
+            stmt.setString(3, phone);
+            stmt.setString(4, email);
+            stmt.setString(5, role);
+            stmt.setInt(6, Integer.parseInt(id));
+
+            int rows = stmt.executeUpdate();
+
+            if (rows > 0) {
+%>
+                <script>
+                    alert("Register updated successfully!");
+                    window.location.href = "ManageRegister.jsp";
+                </script>
+<%
+            } else {
+%>
+                <script>
+                    alert("Update failed. ID not found.");
+                    window.location.href = "ManageRegister.jsp";
+                </script>
+<%
+            }
+            return;
+        } catch (Exception e) {
+%>
+            <script>
+                alert("Error: <%= e.getMessage().replace("'", "") %>");
+                window.location.href = "ManageRegister.jsp";
+            </script>
+<%
+            return;
+        }
+    }
+
+    // Handle GET request (load user data)
+    if (id != null) {
+        try (
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
+        ) {
+            stmt.setInt(1, Integer.parseInt(id));
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                name = rs.getString("name");
+                password = rs.getString("password");
+                phone = rs.getString("phone");
+                email = rs.getString("email");
+                role = rs.getString("role");
+            } else {
+%>
+                <script>
+                    alert("User not found.");
+                    window.location.href = "ManageRegister.jsp";
+                </script>
+<%
                 return;
             }
 
-            String name = "";
-            String password = "";
-            String phone = "";
-            String email = "";
-            String role = "";
+            rs.close();
+        } catch (Exception e) {
+%>
+            <script>
+                alert("Error: <%= e.getMessage().replace("'", "") %>");
+                window.location.href = "ManageRegister.jsp";
+            </script>
+<%
+            return;
+        }
+    } else {
+%>
+    <script>
+        alert("Invalid User ID!");
+        window.location.href = "ManageRegister.jsp";
+    </script>
+<%
+        return;
+    }
+%>
 
-            try {
-                // Load MySQL JDBC Driver
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                // Establish connection
-                conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+<form method="post" action="">
+    <input type="hidden" name="id" value="<%= id %>">
 
-                // Fetch booking details
-                String query = "SELECT * FROM users WHERE id = ?";
-                stmt = conn.prepareStatement(query);
-                stmt.setInt(1, Integer.parseInt(id));
-                rs = stmt.executeQuery();
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="<%= name %>" required><br>
 
-                if (rs.next()) {
-                    name = rs.getString("name");
-                    password = rs.getString("password");
-                    phone = rs.getString("phone");
-                    email = rs.getString("email");
-                    role = rs.getString("role");
-                } else {
-                    out.println("<p>Register not found!</p>");
-                    return;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (rs != null) try { rs.close(); } catch (SQLException ignored) {}
-                if (stmt != null) try { stmt.close(); } catch (SQLException ignored) {}
-                if (conn != null) try { conn.close(); } catch (SQLException ignored) {}
-            }
-        %>
-        <form action="EditRegisterAction.jsp" method="post">
-            <input type="hidden" name="id" value="<%= id %>">
+    <label for="password">Password:</label>
+    <input type="text" id="password" name="password" value="<%= password %>" required><br>
 
-            <label for="name">name</label>
-            <input type="text" id="name" name="name" value="<%= name %>" required>
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone" value="<%= phone %>" required><br>
 
-            <label for="password">password</label>
-            <input type="text" id="password" name="password" value="<%= password %>" required>
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" value="<%= email %>" required><br>
 
-            <label for="phone">phone</label>
-            <input type="text" id="phone" name="phone" value="<%= phone %>" required>
+    <label for="role">Role:</label>
+    <input type="text" id="role" name="role" value="<%= role %>" required><br>
 
-            <label for="email">Email</label>
-            <input type="text" id="email" name="email" value="<%= email %>" required>
+    <button type="submit">Update Register</button>
+</form>
 
-            <label for="role">Role</label>
-            <input type="text" id="role" name="role" value="<%= role %>" required>
-
-            <button type="submit">Update Register</button>
-        </form>
-    </div>
+</div>
 </body>
 </html>

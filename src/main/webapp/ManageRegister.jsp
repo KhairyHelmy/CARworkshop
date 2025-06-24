@@ -155,6 +155,12 @@
     <td><%= rs.getString("email") %></td>
     <td><%= rs.getString("role") %></td>
 </tr>
+
+ <!-- Update Button -->
+                    <form action="UpdateBooking.jsp" method="get" style="display:inline;">
+                        <input type="hidden" name="booking_id" value="<%= rs.getInt("booking_id") %>">
+                        <button type="submit">Update</button>
+                    </form>
 <%
         }
     } catch (Exception e) {
