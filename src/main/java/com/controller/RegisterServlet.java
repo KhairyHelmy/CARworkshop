@@ -1,4 +1,3 @@
- 
 package com.controller;
 
 import com.util.DBConnection;
@@ -11,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
@@ -27,8 +27,7 @@ public class RegisterServlet extends HttpServlet {
         // SQL query to insert user data into the database
         String query = "INSERT INTO users (name, password, phone, email, role) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+        try (Connection connection = DBConnection.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
 
             // Set parameters for the prepared statement
             statement.setString(1, name);
@@ -58,6 +57,10 @@ public class RegisterServlet extends HttpServlet {
             e.printStackTrace();
             // Handle database errors
             response.sendRedirect("Register.jsp?message=error");
+
+            HttpSession session = request.getSession();
+            session.setAttribute("registerSuccess", "Registration completed successfully!");
+            response.sendRedirect("StartLogin.jsp"); // atau ke Homepage.jsp kalau sesuai
         }
     }
 }

@@ -106,6 +106,19 @@
 
 </head>
 <body>
+    
+    <%
+    String logoutSuccess = (String) session.getAttribute("logoutSuccess");
+    if (logoutSuccess != null) {
+%>
+    <script>
+        alert("<%= logoutSuccess %>");
+    </script>
+<%
+        session.removeAttribute("logoutSuccess");
+    }
+%>
+
     <div class="welcome">
         <h1>Car Workshop Management System</h1>
         

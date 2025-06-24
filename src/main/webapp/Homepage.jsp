@@ -118,7 +118,19 @@
  
 <body>
     
-    
+   <body>
+<%
+    String loginSuccess = (String) session.getAttribute("loginSuccess");
+    if (loginSuccess != null) {
+%>
+    <script>
+        alert("<%= loginSuccess %>");
+    </script>
+<%
+        session.removeAttribute("loginSuccess");
+    }
+%>
+ 
     <div class="welcome">
         <h1>Car Workshop Management System</h1>
         
@@ -144,17 +156,7 @@
             <a href="<%= links[i] %>"><%= labels[i] %></a>
         <% } %>
     </div>
-<%
-    String loginSuccess = (String) session.getAttribute("loginSuccess");
-    if (loginSuccess != null) {
-%>
-    <script>
-        alert("<%= loginSuccess %>");
-    </script>
-<%
-        session.removeAttribute("loginSuccess"); // buang supaya tak muncul lagi next time
-    }
-%>
+ 
 
     <hr>
 

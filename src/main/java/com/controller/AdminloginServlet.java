@@ -15,15 +15,15 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/AdminloginServlet")
 public class AdminloginServlet extends HttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         String query = "SELECT * FROM users WHERE name = ? AND  password = ?";
 
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-              
+        try (Connection connection = DBConnection.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+
             System.out.println("Username: " + username);
             System.out.println("Password: " + password);
 
@@ -39,9 +39,11 @@ public class AdminloginServlet extends HttpServlet {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
+
                 HttpSession session = request.getSession();
-                session.setAttribute("username", username);
+                session.setAttribute("loginSuccess", "Login successful!");
                 response.sendRedirect("Homepage.jsp");
+
             } else {
                 System.out.println("Invalid login attempt for username: " + username);
                 response.sendRedirect("AdminLogin.jsp?message=invalidhere");
