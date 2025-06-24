@@ -39,11 +39,10 @@ public class AdminloginServlet extends HttpServlet {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-
                 HttpSession session = request.getSession();
-                session.setAttribute("loginSuccess", "Login successful!");
+                session.setAttribute("username", username);
+                session.setAttribute("loginSuccess", "Login successful!"); 
                 response.sendRedirect("Homepage.jsp");
-
             } else {
                 System.out.println("Invalid login attempt for username: " + username);
                 response.sendRedirect("AdminLogin.jsp?message=invalidhere");
