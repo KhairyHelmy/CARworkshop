@@ -154,24 +154,25 @@ ul.nav li.user-info {
     </div>
 
     <nav>
-        <ul class="nav">
-           
-            <li><a href="Booking_Appoiment.jsp">Booking</a></li>
-            <li><a href="Contact.jsp">Contact</a></li>
-            <li><a href="MaintainanceCar.jsp">Maintainance</a></li>
-            <li><a href="LogoutServlet">Logout</a></li>
-            <li><a href="Register.jsp">RegisterUsers</a></li>
-            
-             <li class="user-info">
-            <% 
-                String username = (String) session.getAttribute("username");
-                String role = (String) session.getAttribute("role");
+         <ul class="nav">
+    <li><a href="Booking_Appoiment.jsp">Booking</a></li>
+    <li><a href="Contact.jsp">Contact</a></li>
+    <li><a href="MaintainanceCar.jsp">Maintainance</a></li>
+    <li><a href="LogoutServlet">Logout</a></li>
+    <li><a href="Register.jsp">RegisterUsers</a></li>
 
-                if (username != null && role != null) {
-            %>
-                <span><%= username.toUpperCase() %> (<%= role.toUpperCase() %>)</span>
-            <%
-                }
+    <% 
+        String username = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+
+        if (username != null && role != null) {
+    %>
+        <li class="user-info">
+            <span><%= username.toUpperCase() %> (<%= role.toUpperCase() %>)</span>
+        </li>
+    <% } %>
+</ul>
+
             %>
         </ul>
     </nav>
